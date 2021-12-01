@@ -1,0 +1,34 @@
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+  <!-- <div class="card"  style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Special title treatment</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+  </div> -->
+  <h1 class="center">ChatRooms disponibles</h1>
+  <ng-container *ngIf="chatrooms?.length; else noChatroom">
+    <mat-card class="asd cardPardding" *ngFor="let element of chatrooms">
+      <div class="card "  style="width: 18rem;">
+        <div class="card-body" >
+          <h2 class="card-title center" >{{element.chatRoomName}}</h2>
+          <!-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
+          <button mat-stroked-button color="accent" class="btn-block" (click)="entrarSala(element)">Entrar</button>
+        </div>
+      </div>
+    </mat-card>
+  </ng-container>
+  
+  <ng-template #noChatroom>
+    <mat-card class="asd cardPardding">
+      <p>
+      No Chatrooms !
+      </p>
+  </mat-card>
+  </ng-template>
