@@ -93,8 +93,8 @@
   
 
   <ul id="messagess"></ul>
-  <input id="myMessage" type="text">
-  <button id="send" (click)="sendSocketMessage()">Send</button>
+  <input id="myMessage" type="text" id="message" [(ngModel)]="message.messageText">
+  <button id="send" (click)="sendMessage()">Send</button>
     <!-- <script>
   const socket = io()
 

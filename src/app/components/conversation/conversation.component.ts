@@ -1,5 +1,5 @@
 import { Message } from 'src/app/models/message';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
 import { EnterConversationService } from 'src/app/services/enter-conversation.service';
 import { Router } from '@angular/router';
 import { SocketService } from 'src/app/services/socket.service';
@@ -7,7 +7,6 @@ import { SocketService } from 'src/app/services/socket.service';
 import { interval, Subscription, timer } from 'rxjs';
 import { map, takeWhile } from 'rxjs/operators';
 import { Socket } from 'ngx-socket-io';
-import { stringify } from 'querystring';
 import * as io from 'socket.io-client';
 
 
@@ -16,41 +15,32 @@ import * as io from 'socket.io-client';
   templateUrl: './conversation.component.html',
   styleUrls: ['./conversation.component.css']
 })
-
+@Injectable({
+  providedIn: 'root'
+})
 export class ConversationComponent implements OnInit {
   @ViewChild('messagess') ul;
   message : Message= new Message();
   messages!: Array<Message>;
   messagesDB!: Array<Message>;
   i:number;
-  private socket: io.Socket
   constructor(
     private messageService:EnterConversationService,
     private router: Router,
-    private socketS: SocketService,
-    private ssocket: Socket
-    
-    
+    private socket: Socket
     // private socket: Socket
   ) { }
   timerSubscription: Subscription;
+
   ngOnInit(): void {
     this.obtenerMensajes();
+    this.onReceiveMessage();
   //   this.timerSubscription = timer(0, 5000).pipe(
   //     map(() => {
   //        this.checkearCambiosBD();// load data contains the http request
   //     })
   //  ).subscribe();
-    this.ssocket.connect();
-    this.socket=io.io('http://127.0.0.1:5000');
-    this.socketS.iniServerSocket();
-    this.ssocket.emit('message', 'hola amigos del internet');
-  // this.socket.emit('message', 'hello');
-  // this.socket.on('message', function(msg) {
-  //  this.ul.append('<li>' + msg + '</li>');
-  //  console.log("hola soy sockete")})
-
-
+    
   }
   checkearCambiosBD(){
     this.i=0;
@@ -137,18 +127,33 @@ export class ConversationComponent implements OnInit {
     }, 500);
   }
   
-  sendSocketMessage(){
-    console.log("hola amigos del youtube")
-    
-    this.ssocket.emit('message', 'hola amigos del internet');
-    this.ssocket.on('message', (res) => console.log("pepe"));
-    this.ssocket.emit('message', "message");
-    this.socket.emit('message', "message2");
-    this.socket.on('message', (res) => console.log("pepito"));
-    this.socket.send("pepe");
-    console.log("hola amigos del youtubeeeee")
+  sendMessage(){
+    let messageInfo={
+      txtMsg: this.message.messageText,
+      uID: sessionStorage.getItem("userId"),
+      crID: sessionStorage.getItem("crId")
+    }
+    this.socket.emit("sendMessage", messageInfo).subscribe(
+      (result) => {
+        console.log(result);
+      },
+      (error) => {
+        console.log("Error", error);
+      }
+    );
+    setTimeout(() => {
+      this.obtenerMensajes();
+    }, 500);
+    // console.log("hola amigos del youtube")
+    // this.socket.emit('message', 'hola amigos del internet');
+    // console.log("hola amigos del youtubeeeee")
   }
 
+  onReceiveMessage(){
+    this.socket.on("receiveMessage",(messageInfo)=>{
+      this.messages.push(messageInfo);
+    });
+  }
   addML(msg:string){
     this.ul.append('<li>' + msg + '</li>')
     return "hola";
