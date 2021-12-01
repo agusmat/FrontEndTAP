@@ -22,7 +22,6 @@ export class HomeComponent implements OnInit {
 
   obtenerChatrooms() {
     //this.asistentes = this.asistenteService.getAsistente();
-    console.log("donko se la come")
     console.log(sessionStorage.getItem("token"))
 
     this.chatrooms = new Array<Chatroom>();
