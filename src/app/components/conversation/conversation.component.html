@@ -64,7 +64,7 @@
     <br>
     <br>
     <br>
-    <!-- <div class="backBtn" (click)="back()">
+    <div class="backBtn" (click)="back()">
         <span class="line tLine"></span>
         <span class="line mLine"></span>
         <span class="label">Back</span>
@@ -89,12 +89,38 @@
         <button (click)="deleteMsg()" class="btn btn-default">Delete my messages</button>
     </div>
     
-  </div> -->
+  </div>
+  <!-- <div class="backBtn" (click)="back()">
+        <span class="line tLine"></span>
+        <span class="line mLine"></span>
+        <span class="label">Back</span>
+        <span class="line bLine"></span>
+      </div>
+      <br>
+      <br>
+
+  <div class="messages-component center">
+    <div class="messages">
+      <div class="message" *ngFor="let element of messagesSKT">
+        <b>{{ element.userName }}</b>: {{ element.messageText }}
+      </div>
+    </div>
+    <div class="new-message-component">
+        <div class="field">
+          <label for="message">Message:</label>
+          <input id="message" [(ngModel)]="message.messageText">
+        </div>
+        <button (click)="sendMessage()" class="btn btn-default">Send</button>
+
+        <button (click)="deleteMsg()" class="btn btn-default">Delete my messages</button>
+    </div>
+    
+  </div>
   
 
   <ul id="messagess"></ul>
   <input id="myMessage" type="text" id="message" [(ngModel)]="message.messageText">
-  <button id="send" (click)="sendMessage()">Send</button>
+  <button id="send" (click)="sendMessage()">Send</button> -->
     <!-- <script>
   const socket = io()
 
@@ -110,7 +136,6 @@
     $('#myMessage').val('');
   })
     </script> -->
-
     <!-- <ul id="messagesSCK" id="messageSCK" ngModel #messagesSCK></ul>
     <input id="myMessage" type="text" [(ngModel)]="message.messageText">
     <button (click)="sendSocketMessage()" id="send">Send</button> -->

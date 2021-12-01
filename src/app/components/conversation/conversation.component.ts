@@ -4,6 +4,7 @@ import { EnterConversationService } from 'src/app/services/enter-conversation.se
 import { Router } from '@angular/router';
 import { SocketService } from 'src/app/services/socket.service';
 
+
 import { interval, Subscription, timer } from 'rxjs';
 import { map, takeWhile } from 'rxjs/operators';
 import { Socket } from 'ngx-socket-io';
@@ -22,6 +23,7 @@ export class ConversationComponent implements OnInit {
   @ViewChild('messagess') ul;
   message : Message= new Message();
   messages!: Array<Message>;
+  messagesSKT!: Array<Message>;
   messagesDB!: Array<Message>;
   i:number;
   constructor(
@@ -34,12 +36,12 @@ export class ConversationComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerMensajes();
-    this.onReceiveMessage();
-  //   this.timerSubscription = timer(0, 5000).pipe(
-  //     map(() => {
-  //        this.checkearCambiosBD();// load data contains the http request
-  //     })
-  //  ).subscribe();
+    // this.onReceiveMessage();
+    this.timerSubscription = timer(0, 5000).pipe(
+      map(() => {
+         this.checkearCambiosBD();// load data contains the http request
+      })
+    ).subscribe();
     
   }
   checkearCambiosBD(){
@@ -93,7 +95,7 @@ export class ConversationComponent implements OnInit {
     // var dateM = Date.now();
     // console.log(dateM)
     // // this.message.sentDate=dateM;
-    console.log("dombi se la come")
+    
     this.messageService.sendMessage(this.message.messageText,sessionStorage.getItem("userId"), sessionStorage.getItem("crId")).subscribe(
       (result) => {
         console.log(result);
@@ -127,37 +129,39 @@ export class ConversationComponent implements OnInit {
     }, 500);
   }
   
-  sendMessage(){
-    let messageInfo={
-      txtMsg: this.message.messageText,
-      uID: sessionStorage.getItem("userId"),
-      crID: sessionStorage.getItem("crId")
-    }
-    this.socket.emit("sendMessage", messageInfo).subscribe(
-      (result) => {
-        console.log(result);
-      },
-      (error) => {
-        console.log("Error", error);
-      }
-    );
-    setTimeout(() => {
-      this.obtenerMensajes();
-    }, 500);
+  // sendMessage(){
+  //   // var ola=this.onReceiveMessage();
+  //   let messageInfo={
+  //     txtMsg: this.message.messageText,
+  //     uID: sessionStorage.getItem("userId"),
+  //     crID: sessionStorage.getItem("crId")
+  //   }
+  //   this.socket.emit("sendMessage", messageInfo);
+
+   
+    // setTimeout(() => {
+    //   this.obtenerMensajes();
+    // }, 500);
     // console.log("hola amigos del youtube")
     // this.socket.emit('message', 'hola amigos del internet');
     // console.log("hola amigos del youtubeeeee")
-  }
+  // }
 
-  onReceiveMessage(){
-    this.socket.on("receiveMessage",(messageInfo)=>{
-      this.messages.push(messageInfo);
-    });
-  }
-  addML(msg:string){
-    this.ul.append('<li>' + msg + '</li>')
-    return "hola";
-  }
+  // onReceiveMessage(){
+  //   console.log("ola");
+  //   this.socket.on("receiveMessage",(userss)=>{
+  //     console.log(userss);
+  //     userss.forEach(element => 
+  //       let msg:Message={
+
+  //       }
+  //       this.messages.push(element));
+
+  //     this.messages.push(userss);
+  //     console.log(this.messages);
+  //   });
+  //   // return this.messagesSKT;
+  // }
 
   connect(){
 
